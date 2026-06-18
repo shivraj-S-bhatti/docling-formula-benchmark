@@ -1,6 +1,7 @@
 # Local scratch and private seed material
 seed-research.md
 handoff/
+reading/
 .agents/
 .codex/
 
@@ -29,4 +30,3 @@ runs/
 
 # macOS
 .DS_Store
-
