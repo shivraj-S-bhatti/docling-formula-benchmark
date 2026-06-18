@@ -1,0 +1,120 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.62in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{amsmath}
+
+\hypersetup{colorlinks=true,urlcolor=blue!55!black,linkcolor=blue!55!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlist[itemize]{leftmargin=*,nosep,topsep=2pt}
+\setlist[enumerate]{leftmargin=*,nosep,topsep=2pt}
+\titlespacing*{\section}{0pt}{7pt}{3pt}
+\titlespacing*{\subsection}{0pt}{5pt}{2pt}
+
+\title{\vspace{-1.2em}\textbf{Docling Formula Adapter: Premise, Field Map, and Gap}\\[-0.2em]
+\large A two-page conversation brief for Taru}
+\author{}
+\date{\vspace{-1.6em}June 13, 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\section{Premise}
+
+We like \textbf{Docling} because it is already shaped like infrastructure, not a one-off model demo: it parses documents into a structured representation, supports layout/table/formula/code enrichment, exposes Python and CLI surfaces, and fits downstream RAG/data pipelines. The interesting opportunity is not ``OCR but with another VLM.'' It is \textbf{verifiable structured extraction from scientific documents}, beginning with formulas.
+
+The seed idea: build or adapt a small Docling-compatible formula recognizer that converts formula crops/pages into \LaTeX, preserves location/provenance, exposes confidence and validation metadata, and later supports a formal subset that can be checked in Lean.
+
+\textbf{Important framing:} Lean does not validate arbitrary \LaTeX. \LaTeX is display syntax; Lean is typed formal math. The practical stack is:
+\[
+\text{image} \rightarrow \text{LaTeX} \rightarrow \text{canonical LaTeX} \rightarrow \text{render/visual checks} \rightarrow \text{optional typed Lean check}
+\]
+
+\section{What The Field Has Done Well Since 2023}
+
+\textbf{1. Scientific PDF-to-markup became real.} Nougat showed that academic PDFs can be converted into markup with formulas, attacking the ``PDF loses semantics'' problem directly. It proved demand and set the scientific-document framing, but it is academic-document-specialized and not a full general document system.
+
+\textbf{2. General document parsers got much stronger.} Docling, MinerU, Dolphin, PaddleOCR-VL, and olmOCR pushed the field toward full document conversion: reading order, layout, tables, formulas, charts, lists, scanned pages, and Markdown/HTML-like outputs. The best systems now combine learned models with careful preprocessing/postprocessing and benchmark discipline.
+
+\textbf{3. Small/compact VLMs became credible.} SmolDocling is the key Docling-native example: a 256M VLM generating DocTags with layout and content. GOT-OCR2.0 is another strong signal: a 580M unified OCR-2.0 model for text, formulas, tables, charts, geometry, and formatted outputs. PaddleOCR-VL targets a compact 0.9B multilingual parser. The lesson is that good visual tokenization and data curation can beat brute force for document tasks.
+
+\textbf{4. Synthetic data works when it is aligned and checkable.} SynthFormulaNet and SynthCodeNet are large, controlled image-to-text corpora. ChartNet goes further by aligning chart image, plotting code, source table, summary, and QA. olmOCR 2 is especially relevant because it uses unit-test-like verifiable rewards for document OCR, with gains in formulas, tables, and multi-column layouts.
+
+\textbf{5. The frontier is moving from OCR to structured visual code.} GOT, DeepSeek-OCR, MOCR/dots.mocr, and chart/table systems all point the same way: document elements are not just pixels to transcribe; they are visual programs to recover. Formulas are one of the purest cases of this problem.
+
+\section{What Is Already Done Super Well}
+
+\begin{tabular}{p{0.24\linewidth}p{0.68\linewidth}}
+\toprule
+\textbf{Area} & \textbf{Strong existing work} \\
+\midrule
+Document pipeline & Docling gives a clean, extensible document conversion stack. We should build with it, not around it. \\
+Formula/code baseline & CodeFormulaV2 already handles image crops of formulas/code and is trained on SynthFormulaNet/SynthCodeNet. \\
+Full-page conversion & SmolDocling, olmOCR, MinerU, Dolphin, and PaddleOCR-VL show strong page-level extraction and reading-order work. \\
+Efficient VLM design & Vary-toy, SmolDocling, GOT, DeepSeek-OCR, and PaddleOCR-VL show compact models can work if visual tokens/data are good. \\
+Synthetic supervision & SynthFormulaNet, SynthCodeNet, ChartNet, and olmOCR-style synthetic unit tests show scalable supervision is possible. \\
+\bottomrule
+\end{tabular}
+
+\section{What Still Does Not Feel Solved}
+
+\textbf{Formula quality is not just exact-match OCR.} Two \LaTeX strings may render identically; one string may compile but mean the wrong thing; another may be visually right but semantically under-specified. We need layered evaluation: canonical string, compile/render, visual similarity, and optional semantic checks.
+
+\textbf{Real scientific PDFs are messy.} Synthetic formulas are clean. Real papers have equation numbers, line breaks, multi-line alignments, low-resolution scans, font issues, cropped symbols, ambiguous glyphs, theorem context, and notation defined in prose.
+
+\textbf{Model outputs rarely carry trust metadata.} A downstream agent needs to know: did this formula compile, did it visually match the crop, was it low confidence, did alternate candidates exist, and is this formula eligible for Lean validation?
+
+\textbf{Formal validation is underused and often misunderstood.} Lean can be powerful, but only after a typed semantic parse. The right move is a narrow high-value Lean subset, not pretending every formula crop can be auto-formalized.
+
+\textbf{There is no obvious ``formula adapter benchmark'' for Docling users.} Existing systems report broad document metrics. A hard, curated, formula-centered benchmark with validation traces would be useful even before model training.
+
+\section{Proposed Contribution}
+
+The gap is not ``make another OCR model.'' A potentially useful contribution is a \textbf{review/benchmark}: compare VLM and non-VLM formula extraction approaches for Docling-like systems, especially on-device, and identify where CodeFormulaV2 or current SOTA is best versus where another approach may be cheaper, faster, or more reliable.
+
+\begin{quote}
+\textbf{Target artifact:} a Docling-native formula extraction benchmark and adapter study with validation traces: image-to-\LaTeX, canonicalization, compile/render checks, visual equivalence, time-to-parse, memory footprint, layout failure taxonomy, and a small Lean-checkable subset.
+\end{quote}
+
+\section{Targets We Should Optimize}
+
+\begin{tabular}{p{0.24\linewidth}p{0.68\linewidth}}
+\toprule
+\textbf{Target} & \textbf{Metric audiences may care about} \\
+\midrule
+On-device viability & Model size, peak RAM, CPU/MPS latency, cold start, no cloud dependency. \\
+Faster parsing & Total PDF parse time, seconds/page, formulas/second, overhead versus Docling without formula enrichment. \\
+Higher accuracy & Normalized \LaTeX exact match, symbol error rate, structure/tree similarity, render similarity, compile rate. \\
+Layout handling & Formula detection recall, bbox quality, inline/display split, multi-line equations, equation numbers, reading order. \\
+Trust metadata & Confidence calibration, abstention quality, alternate candidates, compile/render pass, visual-match score, Lean-valid subset. \\
+\bottomrule
+\end{tabular}
+
+The practical bar is a Pareto curve, not one score: \textbf{accuracy vs latency vs memory vs trust}. Taru's point is central: an accurate system that takes 30 minutes for 10 pages is not useful for real Docling workflows.
+
+\section{Possible First Milestone}
+
+\begin{enumerate}
+\item Sample and inspect SynthFormulaNet plus a small set of real math-heavy PDFs.
+\item Build a validator: parse target, render \LaTeX, compare to source crop, tag failures.
+\item Run CodeFormulaV2, SmolDocling/Granite-Docling, one larger VLM baseline, and one non-VLM/specialized formula OCR baseline if available.
+\item Create a hard 500--2,000 example benchmark stratified by formula type.
+\item Report accuracy, parse time, memory, and layout failures on 10-page, 50-page, and math-heavy stress PDFs.
+\item Wrap best baseline/cascade as a Docling enrichment adapter with validation metadata.
+\item Add a tiny Lean-valid pilot: elementary algebra/calculus/theorem statements with explicit assumptions.
+\end{enumerate}
+
+\section{Questions For Taru}
+
+\textbf{Decision questions:} benchmark vs adapter vs validation tool? arXiv/math PDFs vs textbooks vs scanned papers? local speed vs top accuracy vs trust metadata? which Lean slice is realistic first? Paper shortlist for follow-up: CodeFormulaV2, SynthFormulaNet, SmolDocling, Nougat, GOT-OCR2.0, DeepSeek-OCR/2, olmOCR 2, DocTron-Formula, ChartNet.
+
+\end{document}

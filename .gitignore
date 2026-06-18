@@ -1,0 +1,32 @@
+# Local scratch and private seed material
+seed-research.md
+handoff/
+.agents/
+.codex/
+
+# Python / notebooks / data
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+data/
+datasets/
+outputs/
+runs/
+
+# Environment
+.env
+.env.*
+
+# TeX intermediates
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# macOS
+.DS_Store
+

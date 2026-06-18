@@ -1,0 +1,2 @@
+crop_id,dataset_slice,source_doc,model_name,model_version,approach_family,device,runtime,quantization,input_width,input_height,ttft_ms,inference_time_ms,tokens_per_second,peak_ram_mb,peak_vram_mb,predicted_latex,ground_truth_latex,compilation_valid,levenshtein_distance,cer,bleu_1,bleu_4,render_similarity,symbol_error_tags,structure_error_tags,layout_error_tags,notes
+
