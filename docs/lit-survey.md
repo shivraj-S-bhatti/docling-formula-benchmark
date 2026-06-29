@@ -1,12 +1,14 @@
-# Literature Survey: Formula Extraction For Docling-like Pipelines
+# Literature Survey: Efficient Formula Extraction
 
 Updated: 2026-06-18
 
 ## Premise
 
-Docling is useful because it is already an infrastructure layer for document conversion. It does layout, tables, formulas, code enrichment, and structured output. The research question is not whether formulas can be extracted at all. The question is:
+The research question is not whether formulas can be extracted at all. The question is:
 
-> Which formula extraction approach is accurate enough, fast enough, small enough, and trustworthy enough for practical on-device Docling workflows?
+> Which formula extraction approach is accurate enough, fast enough, small enough, and trustworthy enough for practical local or on-device workflows?
+
+Docling is useful because it is already an infrastructure layer for document conversion. It can be one integration target, but it should not be the framing of the research problem.
 
 ## What Has Worked Well
 
@@ -45,7 +47,7 @@ Recent document OCR work increasingly uses compile/render checks, unit-test-like
 
 ## Current Gap
 
-A useful project is a review/benchmark comparing VLM and non-VLM formula extraction approaches for Docling-like systems, especially on-device. The benchmark should identify where CodeFormulaV2 or current SOTA is best, and where a smaller specialized model or hybrid cascade is cheaper, faster, or more reliable.
+A useful project is a review/benchmark comparing VLM and non-VLM formula extraction approaches, especially for local/on-device use. The benchmark should identify where CodeFormulaV2 or current SOTA is best, and where a smaller specialized model or hybrid cascade is cheaper, faster, or more reliable.
 
 ## Suggested Paper Framing
 
@@ -58,7 +60,7 @@ Possible contribution:
 1. taxonomy of formula extraction approaches;
 2. model/system comparison on local hardware;
 3. practical metrics beyond accuracy: latency, memory, compile pass rate, and layout failure modes;
-4. recommendations for Docling-like adapter design.
+4. recommendations for efficient deployment and optional integration into document parsers such as Docling.
 
 ## Source Pointers
 

@@ -8,9 +8,9 @@ Formula Extraction for On-device Document Intelligence: A Review and Benchmark o
 
 ## Core Claim
 
-Docling already makes formula extraction usable, but practical deployments need a clear answer to:
+Formula extraction is already usable in several systems, but practical deployments need a clear answer to:
 
-> Which formula extraction approach should a Docling developer choose when local speed, memory, accuracy, and trust all matter?
+> Which formula extraction approach should a developer choose when local speed, memory, accuracy, and trust all matter?
 
 ## Possible Paper Contributions
 
@@ -18,19 +18,19 @@ Docling already makes formula extraction usable, but practical deployments need 
 2. **Benchmark:** compare representative models across clean, medium, and dense formula slices.
 3. **Metrics:** report not only accuracy, but time-to-parse, RAM/VRAM, compile pass rate, layout failures, and render similarity.
 4. **Practical recommendation:** identify where CodeFormulaV2 is best and where smaller non-VLM models are cheaper/faster.
-5. **Docling adapter perspective:** explain how a production document parser could route formulas through a cascade.
+5. **Deployment perspective:** explain how a production document parser could route formulas through a cascade.
 
 ## Proposed Structure
 
 1. Introduction and motivation
-2. Background: Docling and formula extraction
+2. Background: formula extraction and document parsing
 3. Taxonomy of approaches
 4. Candidate models and systems
 5. Benchmark design
 6. Metrics and hardware setup
 7. Results
 8. Discussion: VLM vs non-VLM tradeoffs
-9. Recommendations for Docling-like systems
+9. Recommendations for efficient deployment and document-parser integration
 10. Limitations and future work
 
 ## What Would Make This Useful
@@ -48,4 +48,3 @@ Docling already makes formula extraction usable, but practical deployments need 
 - Can render similarity be automated robustly enough for a benchmark?
 - Should Lean validation be included now or left as future work?
 - What is the minimal benchmark size that still tells a useful story?
-

@@ -4,7 +4,7 @@ Updated: 2026-06-18
 
 ## Benchmark Goal
 
-Compare VLM and non-VLM formula extraction approaches for Docling-like document pipelines, especially local/on-device use.
+Compare VLM and non-VLM formula extraction approaches for local/on-device scientific and educational document workflows.
 
 Primary question:
 
@@ -74,7 +74,7 @@ These are working targets, not claims.
 - Dense engineering CER: less than 8% initially.
 - LaTeX compile pass rate: greater than 95% on clean data.
 - 10-page local parse time: measured and reported; avoid any system that takes tens of minutes.
-- Memory: fit comfortably alongside Docling on a consumer laptop.
+- Memory: fit comfortably alongside a document parser on a consumer laptop.
 
 ## Result Logging Schema
 

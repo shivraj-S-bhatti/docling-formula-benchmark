@@ -19,7 +19,7 @@
 \titlespacing*{\section}{0pt}{7pt}{3pt}
 \titlespacing*{\subsection}{0pt}{5pt}{2pt}
 
-\title{\vspace{-1.2em}\textbf{Docling Formula Adapter: Premise, Field Map, and Gap}\\[-0.2em]
+\title{\vspace{-1.2em}\textbf{Formula Extraction: Premise, Field Map, and Options}\\[-0.2em]
 \large A two-page conversation brief for Taru}
 \author{}
 \date{\vspace{-1.6em}June 13, 2026}
@@ -30,9 +30,9 @@
 
 \section{Premise}
 
-We like \textbf{Docling} because it is already shaped like infrastructure, not a one-off model demo: it parses documents into a structured representation, supports layout/table/formula/code enrichment, exposes Python and CLI surfaces, and fits downstream RAG/data pipelines. The interesting opportunity is not ``OCR but with another VLM.'' It is \textbf{verifiable structured extraction from scientific documents}, beginning with formulas.
+We care about formula extraction because scientific and educational documents are still hard to convert into useful machine-readable math at scale. The interesting opportunity is not ``OCR but with another VLM.'' It is \textbf{efficient, verifiable structured extraction from scientific documents}, beginning with formulas. Docling is a useful integration target, but not the definition of the problem.
 
-The seed idea: build or adapt a small Docling-compatible formula recognizer that converts formula crops/pages into \LaTeX, preserves location/provenance, exposes confidence and validation metadata, and later supports a formal subset that can be checked in Lean.
+The seed idea has three plausible levels: a review/benchmark, a hard dataset/evaluation suite, or a small efficient formula adapter/model that converts formula crops/pages into \LaTeX, preserves provenance, exposes confidence and validation metadata, and later supports a formal subset that can be checked in Lean.
 
 \textbf{Important framing:} Lean does not validate arbitrary \LaTeX. \LaTeX is display syntax; Lean is typed formal math. The practical stack is:
 \[
@@ -75,14 +75,14 @@ Synthetic supervision & SynthFormulaNet, SynthCodeNet, ChartNet, and olmOCR-styl
 
 \textbf{Formal validation is underused and often misunderstood.} Lean can be powerful, but only after a typed semantic parse. The right move is a narrow high-value Lean subset, not pretending every formula crop can be auto-formalized.
 
-\textbf{There is no obvious ``formula adapter benchmark'' for Docling users.} Existing systems report broad document metrics. A hard, curated, formula-centered benchmark with validation traces would be useful even before model training.
+\textbf{There is no obvious practical formula extraction benchmark.} Existing systems report broad document metrics. A hard, curated, formula-centered benchmark with validation traces would be useful even before model training.
 
 \section{Proposed Contribution}
 
-The gap is not ``make another OCR model.'' A potentially useful contribution is a \textbf{review/benchmark}: compare VLM and non-VLM formula extraction approaches for Docling-like systems, especially on-device, and identify where CodeFormulaV2 or current SOTA is best versus where another approach may be cheaper, faster, or more reliable.
+The gap is not ``make another OCR model.'' A potentially useful contribution is a \textbf{review/benchmark}: compare VLM and non-VLM formula extraction approaches for local scientific/educational document workflows, and identify where CodeFormulaV2 or current SOTA is best versus where another approach may be cheaper, faster, or more reliable.
 
 \begin{quote}
-\textbf{Target artifact:} a Docling-native formula extraction benchmark and adapter study with validation traces: image-to-\LaTeX, canonicalization, compile/render checks, visual equivalence, time-to-parse, memory footprint, layout failure taxonomy, and a small Lean-checkable subset.
+\textbf{Target artifact:} a formula extraction benchmark and adapter study with validation traces: image-to-\LaTeX, canonicalization, compile/render checks, visual equivalence, time-to-parse, memory footprint, layout failure taxonomy, and a small Lean-checkable subset.
 \end{quote}
 
 \section{Targets We Should Optimize}
@@ -92,14 +92,14 @@ The gap is not ``make another OCR model.'' A potentially useful contribution is 
 \textbf{Target} & \textbf{Metric audiences may care about} \\
 \midrule
 On-device viability & Model size, peak RAM, CPU/MPS latency, cold start, no cloud dependency. \\
-Faster parsing & Total PDF parse time, seconds/page, formulas/second, overhead versus Docling without formula enrichment. \\
+Faster parsing & Total PDF parse time, seconds/page, formulas/second, overhead versus a base PDF/OCR pipeline. \\
 Higher accuracy & Normalized \LaTeX exact match, symbol error rate, structure/tree similarity, render similarity, compile rate. \\
 Layout handling & Formula detection recall, bbox quality, inline/display split, multi-line equations, equation numbers, reading order. \\
 Trust metadata & Confidence calibration, abstention quality, alternate candidates, compile/render pass, visual-match score, Lean-valid subset. \\
 \bottomrule
 \end{tabular}
 
-The practical bar is a Pareto curve, not one score: \textbf{accuracy vs latency vs memory vs trust}. Taru's point is central: an accurate system that takes 30 minutes for 10 pages is not useful for real Docling workflows.
+The practical bar is a Pareto curve, not one score: \textbf{accuracy vs latency vs memory vs trust}. Taru's point is central: an accurate system that takes 30 minutes for 10 pages is not useful for real bulk document workflows.
 
 \section{Possible First Milestone}
 
@@ -109,7 +109,7 @@ The practical bar is a Pareto curve, not one score: \textbf{accuracy vs latency 
 \item Run CodeFormulaV2, SmolDocling/Granite-Docling, one larger VLM baseline, and one non-VLM/specialized formula OCR baseline if available.
 \item Create a hard 500--2,000 example benchmark stratified by formula type.
 \item Report accuracy, parse time, memory, and layout failures on 10-page, 50-page, and math-heavy stress PDFs.
-\item Wrap best baseline/cascade as a Docling enrichment adapter with validation metadata.
+\item Optionally wrap best baseline/cascade as a document-parser enrichment adapter with validation metadata.
 \item Add a tiny Lean-valid pilot: elementary algebra/calculus/theorem statements with explicit assumptions.
 \end{enumerate}
 
